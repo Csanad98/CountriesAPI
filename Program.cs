@@ -11,11 +11,13 @@ namespace CountriesAPI
     {
         private static readonly HttpClient client = new HttpClient();
         private const string baseURI = "https://restcountries-v1.p.rapidapi.com/";
-
+        private const string headerKeyString = "x-rapidapi-key";
+        private const string headerKey = "87df6da5f0mshdc4ff4d39ed1d44p1696f0jsn20e0c00600ed";
+        
         static async Task Main(string[] args)
         {
-            var countries = await GetCountriesByCallingCode(1);
-            Console.WriteLine(countries[1].Name);
+            var countries = await GetCountriesByCallingCode(36);
+            Console.WriteLine(countries[0].Name);
         }
 
         private static async Task<List<Country>> GetCountriesByCallingCode(int callingCode)
@@ -25,8 +27,7 @@ namespace CountriesAPI
                 Method = HttpMethod.Get,
                 RequestUri = new Uri(baseURI+"/callingcode/"+callingCode.ToString())
             };
-            request.Headers.Add("x-rapidapi-key", "87df6da5f0mshdc4ff4d39ed1d44p1696f0jsn20e0c00600ed");
-            request.Headers.Add("x-rapidapi-host", "restcountries-v1.p.rapidapi.com");
+            request.Headers.Add(headerKeyString, headerKey);
             var response = await client.SendAsync(request);
             try {
                 response.EnsureSuccessStatusCode();
