@@ -16,11 +16,10 @@ namespace CountriesAPI
         
         static async Task Main(string[] args)
         {
-            string val;
+            int dialNumber;
             Console.Write("Enter calling code to get information about countries that use it: ");
-            val = Console.ReadLine();
-            int a = Convert.ToInt32(val);
-            var countries = await GetCountriesByCallingCode(a);
+            dialNumber = Convert.ToInt32(Console.ReadLine());
+            var countries = await GetCountriesByCallingCode(dialNumber);
             if(countries is null)
             {
                 Console.WriteLine("No countries found with this calling code.");
