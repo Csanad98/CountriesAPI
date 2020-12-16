@@ -21,9 +21,18 @@ namespace CountriesAPI
             val = Console.ReadLine();
             int a = Convert.ToInt32(val);
             var countries = await GetCountriesByCallingCode(a);
-            foreach(Country c in countries){
-                Console.WriteLine(c.ToString());
+            if(countries is null)
+            {
+                Console.WriteLine("No countries found with this calling code.");
             } 
+            else 
+            {
+                foreach(Country c in countries)
+                {
+                    Console.WriteLine(c.ToString());
+                } 
+            }
+            
             
         }
 
@@ -36,11 +45,12 @@ namespace CountriesAPI
             };
             request.Headers.Add(headerKeyString, headerKey);
             var response = await client.SendAsync(request);
-            try {
+            try 
+            {
                 response.EnsureSuccessStatusCode();
-            } catch (HttpRequestException e){
-                Console.Write(e.ToString());
-                System.Environment.Exit(1);
+            } catch (HttpRequestException)
+            {
+                return null;
             }
             
             var body = await response.Content.ReadAsStreamAsync();
