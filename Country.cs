@@ -16,5 +16,10 @@ namespace CountriesAPI
 
         [JsonPropertyName("population")]
         public int Population { get; set; }
+
+        public override string ToString()
+        {
+            return "Country: " + Name + ", Capital: " + Capital + ", Region: " + Region + ", Population: " + Population;
+        }
     }
 }
