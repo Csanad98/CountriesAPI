@@ -16,7 +16,11 @@ namespace CountriesAPI
         
         static async Task Main(string[] args)
         {
-            var countries = await GetCountriesByCallingCode(1);
+            string val;
+            Console.Write("Enter calling code to get information about countries that use it: ");
+            val = Console.ReadLine();
+            int a = Convert.ToInt32(val);
+            var countries = await GetCountriesByCallingCode(a);
             foreach(Country c in countries){
                 Console.WriteLine(c.ToString());
             } 
