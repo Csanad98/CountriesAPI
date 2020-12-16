@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Collections.Generic;
 using System.Text.Json;
 
@@ -31,8 +31,6 @@ namespace CountriesAPI
                     Console.WriteLine(c.ToString());
                 } 
             }
-            
-            
         }
 
         private static async Task<List<Country>> GetCountriesByCallingCode(int callingCode)
@@ -43,13 +41,22 @@ namespace CountriesAPI
                 RequestUri = new Uri(baseURI+"/callingcode/"+callingCode.ToString())
             };
             request.Headers.Add(headerKeyString, headerKey);
-            var response = await client.SendAsync(request);
+            HttpResponseMessage response = null;
             try 
             {
+                response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
-            } catch (HttpRequestException)
+            } catch (HttpRequestException e)
             {
-                return null;
+                if(response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
+                else 
+                {
+                    Console.WriteLine(e.ToString());
+                    System.Environment.Exit(1);
+                }
             }
             
             var body = await response.Content.ReadAsStreamAsync();
